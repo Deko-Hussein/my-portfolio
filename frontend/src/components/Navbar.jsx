@@ -1,252 +1,110 @@
-// import { useState } from "react";
-// import { useTheme } from "../context/ThemeContext";
-// import { IoMdMenu } from "react-icons/io";
-// import { RiCloseLargeFill } from "react-icons/ri";
-// import { LuSunMoon } from "react-icons/lu";
-// import { IoMoonOutline } from "react-icons/io5";
-
-// function Navbar() {
-//   const { theme, toggleTheme } = useTheme();
-//   const [menuOpen, setMenuOpen] = useState(false);
-
-//   const handleMobileLinkClick = () => {
-//     setMenuOpen(false);
-//   };
-
-//   return (
-//     <>
-//       {/* ✅ OVERLAY (mobile menu) */}
-//       {menuOpen && (
-//         <div
-//           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-//           onClick={() => setMenuOpen(false)}
-//         />
-//       )}
-
-//       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-black/40 backdrop-blur-xl shadow-sm dark:shadow-black/20 transition-colors duration-300">
-//         <div className="section-container flex items-center justify-between py-4">
-//           {/* LOGO */}
-//           <a
-//             href="#home"
-//             className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-//           >
-//             Defoojaa
-//           </a>
-
-//           {/* DESKTOP MENU */}
-//           <div className="hidden md:flex items-center gap-8 text-sm text-gray-700 dark:text-gray-300">
-//             {["Home","about", "skills", "projects", "contact"].map(
-//               (link) => (
-//                 <a
-//                   key={link}
-//                   href={`#${link}`}
-//                   className="capitalize hover:text-black dark:hover:text-white transition"
-//                 >
-//                   {link}
-//                 </a>
-//               )
-//             )}
-
-//             {/* THEME BUTTON */}
-//             <button
-//               onClick={toggleTheme}
-//               type="button"
-//               className="flex items-center justify-center rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 bg-white dark:bg-white/5 text-black dark:text-white hover:scale-110 active:scale-95 transition-all duration-200"
-//               aria-label="Toggle theme"
-//             >
-//               {theme === "dark" ? (
-//                 <LuSunMoon className="text-yellow-400 text-lg" /> 
-//               ) : (
-//                 <IoMoonOutline className="text-gray-800 text-lg dark:text-yellow-300" /> 
-//               )}
-//             </button>
-
-//             {/* ADMIN */}
-//             <a
-//               href="/login"
-//               className="rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition"
-//             >
-//               Admin
-//             </a>
-//           </div>
-
-//           {/* MOBILE MENU BUTTON */}
-//           <button
-//             type="button"
-//             className="md:hidden text-2xl text-black dark:text-white z-50"
-//             onClick={() => setMenuOpen((prev) => !prev)}
-//             aria-label="Toggle menu"
-//           >
-//             {menuOpen ? <RiCloseLargeFill /> : <IoMdMenu />}
-//           </button>
-//         </div>
-
-//         {/* MOBILE MENU */}
-//         {menuOpen && (
-//           <div className="md:hidden px-6 pb-6 flex flex-col gap-4 text-gray-700 dark:text-gray-300 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-xl transition-all duration-300 z-50">
-//             {["Home", "about","skills", "services", "projects", "contact"].map(
-//               (link) => (
-//                 <a
-//                   key={link}
-//                   href={`#${link}`}
-//                   onClick={handleMobileLinkClick}
-//                   className="capitalize hover:text-black dark:hover:text-white transition"
-//                 >
-//                   {link}
-//                 </a>
-//               )
-//             )}
-
-//             {/* THEME BUTTON MOBILE */}
-//             <button
-//               onClick={toggleTheme}
-//               type="button"
-//               className="flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 bg-white dark:bg-white/5 text-black dark:text-white"
-//             >
-//               {theme === "dark" ? (
-//                 <>
-//                   <LuSunMoon className="text-yellow-400 text-lg" />
-//                   <span>Light mode</span>
-//                 </>
-//               ) : (
-//                 <>
-//                   <IoMoonOutline className="text-gray-800 text-lg dark:text-yellow-300" />
-//                   <span>Dark mode</span>
-//                 </>
-//               )}
-//             </button>
-
-//             {/* ADMIN */}
-//             <a
-//               href="/login"
-//               onClick={handleMobileLinkClick}
-//               className="hover:text-black dark:hover:text-white transition"
-//             >
-//               Admin
-//             </a>
-//           </div>
-//         )}
-//       </nav>
-//     </>
-//   );
-// }
-
-// export default Navbar;
-
-// Navbar.jsx
 import { useState } from "react";
+import { LuMoonStar, LuSunMedium } from "react-icons/lu";
+import { RiCloseLargeFill, RiMenu3Line } from "react-icons/ri";
 import { useTheme } from "../context/ThemeContext";
-import { IoMdMenu } from "react-icons/io";
-import { RiCloseLargeFill } from "react-icons/ri";
-import { LuSunMoon } from "react-icons/lu";
-import { IoMoonOutline } from "react-icons/io5";
+
+const navLinks = ["about", "skills", "projects", "contact"];
 
 function Navbar() {
-  const { theme, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
-  const handleMobileLinkClick = () => {
-    setMenuOpen(false);
-  };
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
       {menuOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-          onClick={() => setMenuOpen(false)}
+        <button
+          type="button"
+          aria-label="Close navigation"
+          className="fixed inset-0 z-40 backdrop-blur-sm md:hidden"
+          style={{ background: "var(--overlay)" }}
+          onClick={closeMenu}
         />
       )}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/10 dark:border-white/10 bg-white/70 dark:bg-black/40 backdrop-blur-xl shadow-sm dark:shadow-black/20 transition-colors duration-300">
+      <nav
+        className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-colors duration-300"
+        style={{ background: "var(--nav-bg)", borderColor: "var(--nav-border)" }}
+      >
         <div className="section-container flex items-center justify-between py-4">
-          <a
-            href="#home"
-            className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-          >
-            Defoojaa
+          <a href="#home" className="text-base font-semibold uppercase tracking-[0.2em] text-slate-900 dark:text-slate-100">
+            Deko Hussein
           </a>
 
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-700 dark:text-gray-300">
-            {["home", "about", "skills", "projects", "contact"].map(
-              (link) => (
-                <a
-                  key={link}
-                  href={`#${link}`}
-                  className="capitalize hover:text-black dark:hover:text-white transition"
-                >
-                  {link}
-                </a>
-              )
-            )}
-
-            <button
-              onClick={toggleTheme}
-              type="button"
-              className="flex items-center justify-center rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 bg-white dark:bg-white/5 text-black dark:text-white hover:scale-110 active:scale-95 transition-all duration-200"
-            >
-              {theme === "dark" ? (
-                <LuSunMoon className="text-yellow-400 text-lg" />
-              ) : (
-                <IoMoonOutline className="text-gray-800 text-lg dark:text-yellow-300" />
-              )}
-            </button>
-
-            <a
-              href="/login"
-              className="rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition"
-            >
-              Admin
-            </a>
-          </div>
-
-          <button
-            type="button"
-            className="md:hidden text-2xl text-black dark:text-white z-50"
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            {menuOpen ? <RiCloseLargeFill /> : <IoMdMenu />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="md:hidden px-6 pb-6 flex flex-col gap-4 text-gray-700 dark:text-gray-300 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-xl transition-all duration-300 z-50">
-            {["home", "about","skills","projects","contact"].map((link) => (
+          <div className="hidden items-center gap-7 md:flex">
+            {navLinks.map((link) => (
               <a
                 key={link}
                 href={`#${link}`}
-                onClick={handleMobileLinkClick}
-                className="capitalize hover:text-black dark:hover:text-white transition"
+                className="text-sm text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
               >
                 {link}
               </a>
             ))}
 
             <button
-              onClick={toggleTheme}
               type="button"
-              className="flex items-center gap-2 rounded-xl border border-black/10 dark:border-white/10 px-4 py-2 bg-white dark:bg-white/5 text-black dark:text-white"
+              onClick={toggleTheme}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/80 bg-white/70 text-slate-900 transition hover:border-teal-400/40 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:hover:bg-white/10"
+              aria-label="Toggle theme"
             >
-              {theme === "dark" ? (
-                <>
-                  <LuSunMoon className="text-yellow-400 text-lg" />
-                  <span>Light mode</span>
-                </>
-              ) : (
-                <>
-                  <IoMoonOutline className="text-gray-800 text-lg dark:text-yellow-300" />
-                  <span>Dark mode</span>
-                </>
-              )}
+              {theme === "dark" ? <LuSunMedium size={18} /> : <LuMoonStar size={18} />}
             </button>
 
-            <a
-              href="/login"
-              onClick={handleMobileLinkClick}
-              className="hover:text-black dark:hover:text-white transition"
-            >
-              Admin
+            <a href="/login" className="secondary-btn">
+              Login
             </a>
+
+            <a href="#projects" className="secondary-btn">
+              View Projects
+            </a>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/80 bg-white/70 text-slate-900 md:hidden dark:border-white/10 dark:bg-white/5 dark:text-slate-100"
+            aria-label="Toggle navigation"
+          >
+            {menuOpen ? <RiCloseLargeFill size={18} /> : <RiMenu3Line size={18} />}
+          </button>
+        </div>
+
+        {menuOpen && (
+          <div className="section-container relative z-50 pb-6 md:hidden">
+            <div className="panel px-5 py-5">
+              <div className="flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <a
+                    key={link}
+                    href={`#${link}`}
+                    onClick={closeMenu}
+                    className="text-sm capitalize text-slate-700 dark:text-slate-200"
+                  >
+                    {link}
+                  </a>
+                ))}
+
+                <div className="mt-2 flex gap-3">
+                  <button type="button" onClick={toggleTheme} className="secondary-btn flex-1">
+                    {theme === "dark" ? "Light" : "Dark"}
+                  </button>
+                  <a href="/login" onClick={closeMenu} className="secondary-btn flex-1">
+                    Login
+                  </a>
+                </div>
+
+                <div className="flex gap-3">
+                  <a href="#projects" onClick={closeMenu} className="secondary-btn flex-1">
+                    View Projects
+                  </a>
+                  <a href="#contact" onClick={closeMenu} className="primary-btn flex-1">
+                    Contact Me
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </nav>

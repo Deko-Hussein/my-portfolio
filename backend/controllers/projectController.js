@@ -3,7 +3,7 @@ const Project = require("../models/Project");
 // GET ALL
 const getProjects = async (req, res) => {
   try {
-    const projects = await Project.find().sort({ createdAt: -1 });
+    const projects = await Project.find().sort({ featured: -1, createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -23,6 +23,9 @@ const createProject = async (req, res) => {
     const {
       title,
       description,
+      bannerTitle,
+      bannerCopy,
+      outcome,
       image,
       githubUrl,
       liveUrl,
@@ -40,6 +43,9 @@ const createProject = async (req, res) => {
     const project = await Project.create({
       title,
       description,
+      bannerTitle,
+      bannerCopy,
+      outcome,
       image,
       githubUrl,
       liveUrl,
@@ -84,10 +90,69 @@ const deleteProject = async (req, res) => {
   }
 };
 
+const getProjectById = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: project,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const updateProject = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    if ((title !== undefined && !title) || (description !== undefined && !description)) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and description required",
+      });
+    }
+
+    const updatedProject = await Project.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedProject) {
+      return res.status(404).json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Project updated successfully",
+      data: updatedProject,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProjects,
   createProject,
   deleteProject,
-  getProjectById: async () => {},
-  updateProject: async () => {},
+  getProjectById,
+  updateProject,
 };

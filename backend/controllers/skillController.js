@@ -1,4 +1,5 @@
 const Skill = require("../models/Skill");
+const validCategories = ["Frontend", "Backend", "Database", "Other Skills", "Tools"];
 
 const getSkills = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ const getSkills = async (req, res) => {
 
 const createSkill = async (req, res) => {
   try {
-    const { name, level } = req.body;
+    const { name, level, category } = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -28,7 +29,18 @@ const createSkill = async (req, res) => {
       });
     }
 
-    const skill = await Skill.create({ name, level });
+    if (category && !validCategories.includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid skill category",
+      });
+    }
+
+    const skill = await Skill.create({
+      name,
+      level,
+      category: category || "Tools",
+    });
 
     res.status(201).json({
       success: true,
@@ -46,6 +58,13 @@ const createSkill = async (req, res) => {
 
 const updateSkill = async (req, res) => {
   try {
+    if (req.body.category && !validCategories.includes(req.body.category)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid skill category",
+      });
+    }
+
     const updatedSkill = await Skill.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,

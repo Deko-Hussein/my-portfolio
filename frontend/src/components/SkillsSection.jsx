@@ -1,153 +1,72 @@
-import { useEffect, useState } from "react";
-import API from "../services/api";
+import useLiveCollection from "../hooks/useLiveCollection";
+
+const skillCategories = ["Frontend", "Backend", "Database", "Other Skills", "Tools"];
 
 function SkillsSection() {
-  const [skills, setSkills] = useState([]);
+  const { items: skills, loading } = useLiveCollection("/skills");
 
-  const experiences = [
-    {
-      year: "2023 - 2025",
-      title: "Full-Stack Developer",
-      company: "Freelizin Project",
-    },
-    {
-      year: "2022 - 2024",
-      title: "Frontend Developer",
-      company: "Personal & Client Projects",
-    },
-    {
-      year: "2021 - 2023",
-      title: "UI/UX Designer",
-      company: "Independent Work",
-    },
-  ];
-
-  const education = [
-    {
-      year: "2022 - Present",
-      title: "Bachelor of Computer Science",
-      school: "Your University Name",
-    },
-    {
-      year: "2023 - 2024",
-      title: "Full-Stack Web Development",
-      school: "Online Learning & Practice",
-    },
-    {
-      year: "2021 - 2022",
-      title: "UI/UX and Web Design",
-      school: "Self Learning Journey",
-    },
-  ];
-
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await API.get("/skills");
-        setSkills(res.data.data || []);
-      } catch (error) {
-        console.error("Failed to fetch skills:", error);
-      }
-    };
-
-    fetchSkills();
-  }, []);
+  const groupedSkills = skillCategories.map((category) => ({
+    category,
+    items: skills.filter((skill) => (skill.category || "Tools") === category),
+  }));
 
   return (
-    <section
-      id="skills"
-      className="py-24    transition-colors duration-500"
-    >
+    <section id="skills" className="section-shell">
       <div className="section-container">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-5xl font-bold mb-3">
-            Check My Skills And Work Experiences
-          </h2>
-          <p className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto leading-7">
-            A quick overview of my work experience, educational background, and
-            technical skills that I use to build modern digital solutions.
+        <div className="section-header">
+          <span className="eyebrow">Skills</span>
+          <h2 className="section-title">Skills managed from the backend.</h2>
+          <p className="section-copy">
+            Skills are grouped by category and auto-refresh from the API, so dashboard updates appear here without a
+            manual page refresh.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 items-start">
-          <div className="rounded-2xl border border-white/10  p-6 shadow-xl">
-            <h3 className="text-xl font-semibold mb-6 ">
-              Work Experiences
-            </h3>
-
-            <div className="space-y-6">
-              {experiences.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-b border-white/10 pb-4 last:border-b-0"
-                >
-                  <p className="text-sm dark:text-cyan-400 mb-1">{item.year}</p>
-                  <h4 className="text-lg font-semibold ">
-                    {item.title}
-                  </h4>
-                  <p className="text-cyan-600 dark:text-cyan-400 text-sm mt-1">{item.company}</p>
-                </div>
-              ))}
-            </div>
+        {loading ? (
+          <div className="panel card-pad text-center text-slate-600 dark:text-slate-400">
+            Loading skills...
           </div>
-
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl">
-            <h3 className="text-xl font-semibold mb-6 ">Education</h3>
-
-            <div className="space-y-6">
-              {education.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-b border-white/10 pb-4 last:border-b-0"
-                >
-                  <p className="text-sm text-cyan-600 dark:text-cyan-400 mb-1">{item.year}</p>
-                  <h4 className="text-lg font-semibold ">
-                    {item.title}
-                  </h4>
-                  <p className="text-cyan-600 dark:text-cyan-400 text-sm mt-1">{item.school}</p>
-                </div>
-              ))}
-            </div>
+        ) : skills.length === 0 ? (
+          <div className="panel card-pad text-center text-slate-600 dark:text-slate-400">
+            No skills found in the backend yet.
           </div>
+        ) : (
+          <div className="section-grid md:grid-cols-2 xl:grid-cols-4">
+            {groupedSkills.map((group) => (
+              <article key={group.category} className="panel card-pad">
+                <p className="meta-label">{group.category}</p>
 
-          <div className="rounded-2xl bg-white text-gray-900 p-6 md:p-8 shadow-2xl">
-            <h3 className="text-xl font-semibold mb-6 text-center">
-              My Skills & Advantage
-            </h3>
-
-            <div className="space-y-6">
-              {skills.length > 0 ? (
-                skills.map((skill) => (
-                  <div key={skill._id}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">
-                          {skill.name?.charAt(0)}
+                {group.items.length === 0 ? (
+                  <p className="mt-5 text-sm leading-7 text-slate-500 dark:text-slate-400">
+                    No skills added yet.
+                  </p>
+                ) : (
+                  <div className="mt-5 space-y-4">
+                    {group.items.map((skill) => (
+                      <div key={skill._id}>
+                        <div className="mb-2 flex items-center justify-between gap-3">
+                          <h3 className="text-sm font-semibold text-slate-950 dark:text-slate-50">
+                            {skill.name}
+                          </h3>
+                          <span className="text-xs font-semibold text-teal-700 dark:text-teal-200">
+                            {skill.level}%
+                          </span>
                         </div>
-                        <h4 className="font-medium text-sm md:text-base">
-                          {skill.name}
-                        </h4>
+
+                        <div className="h-2.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-teal-500"
+                            style={{ width: `${skill.level || 0}%` }}
+                          />
+                        </div>
                       </div>
-
-                      <span className="text-sm font-semibold text-gray-700">
-                        {skill.level}%
-                      </span>
-                    </div>
-
-                    <div className="w-full h-2.5 rounded-full bg-gray-200 overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-orange-500 transition-all duration-700"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
+                    ))}
                   </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No skills found.</p>
-              )}
-            </div>
+                )}
+              </article>
+            ))}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

@@ -1,21 +1,7 @@
-import { useEffect, useState } from "react";
-import API from "../services/api";
+import useLiveCollection from "../hooks/useLiveCollection";
 
 function ServicesSection() {
-  const [services, setServices] = useState([]);
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await API.get("/services");
-        setServices(res.data.data || []);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchServices();
-  }, []);
+  const { items: services } = useLiveCollection("/services");
 
   return (
     <section id="services" className="py-24 bg-white dark:bg-[#0a0a0a] transition-colors duration-500">

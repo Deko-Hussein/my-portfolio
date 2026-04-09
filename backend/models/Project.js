@@ -11,6 +11,21 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: [true, "Project description is required"],
     },
+    bannerTitle: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    bannerCopy: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    outcome: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     image: {
       type: String,
       default: "",

@@ -1,96 +1,51 @@
+import { profile, strengths } from "../data/portfolio";
+
 function AboutSection() {
   return (
-    <section
-      id="about"
-      className="py-24 bg-white dark:bg-[#0a0a0a] transition-colors duration-500"
-    >
+    <section id="about" className="section-shell">
       <div className="section-container">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="card-ui p-8 md:p-10">
-            <p className="text-cyan-600 dark:text-cyan-400 font-semibold mb-3">
-              About Me
-            </p>
+        <div className="section-grid lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]">
+          <div className="panel card-pad">
+            <div className="section-header mb-0">
+              <span className="eyebrow">About</span>
+              <h2 className="section-title">Focused on useful products, not noise.</h2>
+              <p className="section-copy">
+                I am a full-stack developer who enjoys building clean interfaces and dependable backend systems.
+                My work is strongest where product clarity, technical structure, and real-world usefulness need to
+                meet in the same place.
+              </p>
+            </div>
 
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-gray-900 dark:text-white">
-              I am Deko Hussein Said, a passionate Full-Stack Developer.
-            </h2>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <div>
+                <p className="meta-label">Core stack</p>
+                <p className="mt-3 text-base leading-8 text-slate-700 dark:text-slate-300">
+                  React, Tailwind CSS, Node.js, Spring Boot, REST APIs, MongoDB, PostgreSQL, and MySQL.
+                </p>
+              </div>
 
-            <p className="text-gray-700 dark:text-gray-300 leading-8 mb-6">
-              Hello! I'm Deko Hussein Said, a dedicated Full-Stack Developer with
-              a passion for creating dynamic and responsive web applications.
-            </p>
+              <div>
+                <p className="meta-label">Value</p>
+                <p className="mt-3 text-base leading-8 text-slate-700 dark:text-slate-300">
+                  I help turn ideas into structured digital products that are easier to use, easier to maintain, and
+                  ready to scale with the team behind them.
+                </p>
+              </div>
+            </div>
 
-            <p className="text-gray-700 dark:text-gray-300 leading-8 mb-6">
-              My expertise lies in the MERN stack, MongoDB, Express.js, React,
-              and Node.js, as well as PHP, Java Spring Boot, and SQL databases
-              like PostgreSQL and MySQL.
-            </p>
-
-            <p className="text-gray-700 dark:text-gray-300 leading-8 mb-6">
-              I am passionate about building digital solutions that solve
-              real-world problems, especially in areas like job platforms,
-              business systems, and community-focused applications.
-            </p>
-
-            <p className="text-gray-700 dark:text-gray-300 leading-8 mb-6">
-              I have worked on projects like Freelizin, a job connection
-              platform that links job seekers with employers, with a strong
-              focus on usability and real impact.
-            </p>
-
-            <p className="text-gray-700 dark:text-gray-300 leading-8 mb-6">
-              I combine strong development skills with UI/UX design knowledge to
-              create applications that are not only functional but also
-              intuitive and user-friendly.
-            </p>
-
-            <p className="text-gray-500 dark:text-gray-400 leading-8">
-              My goal is to grow as a software engineer, build scalable systems,
-              and contribute to impactful tech solutions in Somalia and beyond.
-            </p>
+            <div className="mt-8 rounded-3xl border border-teal-300/14 bg-teal-300/6 px-5 py-5">
+              <p className="text-sm leading-7 text-slate-700 dark:text-slate-300">{profile.location}</p>
+            </div>
           </div>
 
-          <div className="grid gap-6">
-            <div className="card-ui p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                Frontend Development
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                React, Tailwind CSS, responsive design, modern user interface,
-                and user-friendly experiences.
-              </p>
-            </div>
-
-            <div className="card-ui p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                Backend Development
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Node.js, Express, PHP, Java Spring Boot, REST API development,
-                authentication, and scalable system logic.
-              </p>
-            </div>
-
-            <div className="card-ui p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                Database & Systems
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                MongoDB, PostgreSQL, MySQL, CRUD systems, admin dashboards,
-                business systems, and community-focused platforms.
-              </p>
-            </div>
-
-            <div className="card-ui p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
-                UI/UX Mindset
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                I combine strong development skills with UI/UX design knowledge
-                to create applications that are functional, intuitive, and
-                clean.
-              </p>
-            </div>
+          <div className="grid gap-5 md:gap-6">
+            {strengths.map((item) => (
+              <article key={item.title} className="panel p-6 md:p-7">
+                <p className="meta-label">Strength</p>
+                <h3 className="mt-3 text-xl font-semibold text-slate-950 dark:text-slate-50">{item.title}</h3>
+                <p className="mt-3 text-base leading-8 text-slate-600 dark:text-slate-400">{item.description}</p>
+              </article>
+            ))}
           </div>
         </div>
       </div>

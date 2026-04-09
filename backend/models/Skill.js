@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+
+const skillCategories = ["Frontend", "Backend", "Database", "Other Skills", "Tools"];
+
 const skillSchema = new mongoose.Schema(
   {
     name: {
@@ -11,6 +14,11 @@ const skillSchema = new mongoose.Schema(
       min: 1,
       max: 100,
       default: 80,
+    },
+    category: {
+      type: String,
+      enum: skillCategories,
+      default: "Tools",
     },
   },
   { timestamps: true }
