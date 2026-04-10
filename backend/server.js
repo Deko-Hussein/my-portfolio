@@ -11,10 +11,32 @@ const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const isOriginAllowed = (requestOrigin) => {
+  if (!requestOrigin || allowedOrigins.includes("*")) {
+    return true;
+  }
+
+  return allowedOrigins.some((allowedOrigin) => {
+    if (allowedOrigin === requestOrigin) {
+      return true;
+    }
+
+    if (!allowedOrigin.includes("*")) {
+      return false;
+    }
+
+    const escapedPattern = allowedOrigin
+      .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
+      .replace(/\*/g, ".*");
+
+    return new RegExp(`^${escapedPattern}$`).test(requestOrigin);
+  });
+};
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+      if (isOriginAllowed(origin)) {
         return callback(null, true);
       }
 
