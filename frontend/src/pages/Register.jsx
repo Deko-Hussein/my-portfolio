@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import API from "../services/api";
 
 function Register() {
@@ -13,6 +14,33 @@ function Register() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const getErrorMessage = (error) => {
+    const serverMessage = error.response?.data?.message;
+
+    if (serverMessage === "Admin already exists") {
+      return "Email-kan hore ayaa loo diiwaangeliyey. Fadlan gal bogga login.";
+    }
+
+    if (serverMessage === "Please provide name, email, and password") {
+      return "Fadlan buuxi name, email, iyo password.";
+    }
+
+    if (serverMessage === "Password must be at least 6 characters") {
+      return "Password-ku waa inuu ugu yaraan noqdaa 6 xaraf.";
+    }
+
+    if (serverMessage) {
+      return serverMessage;
+    }
+
+    if (error.code === "ERR_NETWORK") {
+      return "Server-ka lama gaarin. Hubi backend-ka inuu shidan yahay iyo in VITE_API_URL uu sax yahay.";
+    }
+
+    return error.message || "Registration failed";
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -57,11 +85,7 @@ function Register() {
       console.log("REGISTER ERROR:", error);
       console.log("REGISTER ERROR DATA:", error.response?.data);
 
-      setMessage(
-        error.response?.data?.message ||
-          error.message ||
-          "Registration failed"
-      );
+      setMessage(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -99,15 +123,25 @@ function Register() {
             required
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-3"
-            required
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-3 pr-12"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 transition hover:text-gray-700"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </button>
+          </div>
 
           <button
             type="submit"
@@ -117,6 +151,17 @@ function Register() {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
+
+        <p className="mt-5 text-center text-sm text-gray-600">
+          Admin ma leedahay hore?
+          {" "}
+          <Link
+            to="/login"
+            className="font-semibold text-cyan-700 transition hover:text-cyan-600"
+          >
+            Ku laabo login
+          </Link>
+        </p>
       </div>
     </div>
   );

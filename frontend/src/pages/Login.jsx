@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import API from "../services/api";
 
@@ -16,6 +16,18 @@ function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const getErrorMessage = (error) => {
+    if (error.response?.data?.message) {
+      return error.response.data.message;
+    }
+
+    if (error.code === "ERR_NETWORK") {
+      return "Server-ka lama gaarin. Hubi backend-ka inuu shidan yahay iyo in VITE_API_URL uu sax yahay.";
+    }
+
+    return error.message || "Login failed";
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -51,11 +63,7 @@ function Login() {
       console.log("LOGIN ERROR:", error);
       console.log("LOGIN ERROR DATA:", error.response?.data);
 
-      setMessage(
-        error.response?.data?.message ||
-          error.message ||
-          "Login failed"
-      );
+      setMessage(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -113,6 +121,17 @@ function Login() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <p className="mt-5 text-center text-sm text-gray-600 dark:text-gray-300">
+          Markii ugu horreysay?
+          {" "}
+          <Link
+            to="/register"
+            className="font-semibold text-cyan-600 transition hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-200"
+          >
+            Samee admin account
+          </Link>
+        </p>
       </div>
     </div>
   );

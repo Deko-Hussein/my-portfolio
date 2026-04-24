@@ -29,7 +29,7 @@ function Navbar() {
       >
         <div className="section-container flex items-center justify-between py-4">
           <a href="#home" className="text-base font-semibold uppercase tracking-[0.2em] text-slate-900 dark:text-slate-100">
-            Deko Hussein
+            Deko Hussein Said
           </a>
 
           <div className="hidden items-center gap-7 md:flex">

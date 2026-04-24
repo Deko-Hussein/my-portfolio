@@ -20,16 +20,29 @@ function Hero() {
     .toUpperCase();
 
   return (
-    <section id="home" className="relative overflow-hidden pt-28 md:pt-32">
+    <section id="home" className="relative overflow-hidden pt-16 md:pt-20">
       <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.14),transparent_26%),linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0.26))] dark:bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.16),transparent_28%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.16),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0),rgba(2,6,23,0.22))]" />
       <div className="absolute inset-x-0 top-0 -z-10 h-[38rem] bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.16),transparent_42%),radial-gradient(circle_at_right,rgba(14,165,233,0.12),transparent_28%)]" />
       <div className="absolute left-[-8rem] top-32 -z-10 h-56 w-56 rounded-full bg-teal-300/20 blur-3xl dark:bg-teal-400/10" />
       <div className="absolute right-[-5rem] top-20 -z-10 h-64 w-64 rounded-full bg-sky-300/25 blur-3xl dark:bg-cyan-400/10" />
-
-      <div className="section-container section-shell">
-        <div className="section-grid items-center lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+    
+      <div className="section-container pb-20 pt-4 md:pb-24 md:pt-6">
+        <div className="section-grid items-start lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
           <div className="relative">
             <div className="mb-5 flex flex-wrap items-center gap-3">
+              {showImage && (
+                <span className="inline-flex items-center gap-3 rounded-full border border-teal-300/25 bg-white/70 px-2 py-2 pr-4 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur dark:bg-slate-950/35">
+                  <img
+                    src={profile.image}
+                    alt={profile.imageAlt || profile.name}
+                    className="h-10 w-10 rounded-full object-cover"
+                    onError={() => setShowImage(false)}
+                  />
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-700 dark:text-slate-200">
+                    Meet {profile.name.split(" ")[0]}
+                  </span>
+                </span>
+              )}
               <span className="eyebrow mb-0">{profile.role}</span>
               <span className="inline-flex items-center gap-2 rounded-full border border-teal-300/25 bg-white/60 px-3 py-1 text-xs font-semibold tracking-[0.18em] text-slate-700 backdrop-blur dark:bg-slate-950/35 dark:text-slate-200">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(74,222,128,0.85)]" />
@@ -38,11 +51,11 @@ function Hero() {
             </div>
 
             <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-slate-950 dark:text-slate-50 md:text-6xl md:leading-[1.02] xl:text-[4.35rem]">
-              Building{" "}
+              Hi, I&apos;m{" "}
               <span className="bg-[linear-gradient(135deg,#0f766e,#06b6d4)] bg-clip-text text-transparent dark:bg-[linear-gradient(135deg,#5eead4,#67e8f9)]">
-                clear, scalable
-              </span>{" "}
-              web products that feel sharp from first click.
+                {profile.name}
+              </span>
+              .
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-700 dark:text-slate-300 md:text-xl">
@@ -122,12 +135,12 @@ function Hero() {
                   <img
                     src={profile.image}
                     alt={profile.imageAlt || profile.name}
-                    className="h-72 w-full rounded-[22px] object-cover md:h-[24rem]"
+                    className="h-80 w-full rounded-[22px] object-cover object-top md:h-[30rem]"
                     onError={() => setShowImage(false)}
                   />
                   <div className="absolute inset-x-0 bottom-0 rounded-b-[22px] bg-[linear-gradient(180deg,transparent,rgba(15,23,42,0.82))] p-5">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-teal-200">
-                      Product Builder
+                      Hi I&apos;m {profile.name.split(" ")[0]}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-white">{profile.name}</p>
                     <p className="mt-1 text-sm text-slate-200">{profile.role}</p>

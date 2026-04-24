@@ -8,11 +8,11 @@ function AboutSection() {
           <div className="panel card-pad">
             <div className="section-header mb-0">
               <span className="eyebrow">About</span>
-              <h2 className="section-title">Focused on useful products, not noise.</h2>
+              <h2 className="section-title">Focused on building useful products, not noise.</h2>
               <p className="section-copy">
-                I am a full-stack developer who enjoys building clean interfaces and dependable backend systems.
-                My work is strongest where product clarity, technical structure, and real-world usefulness need to
-                meet in the same place.
+                I am a full-stack developer who enjoys creating clean user interfaces and reliable backend systems.
+                My strength lies in combining product clarity, solid technical structure, and real-world usefulness
+                into one cohesive solution.
               </p>
             </div>
 
@@ -25,16 +25,21 @@ function AboutSection() {
               </div>
 
               <div>
-                <p className="meta-label">Value</p>
+                <p className="meta-label">Education</p>
                 <p className="mt-3 text-base leading-8 text-slate-700 dark:text-slate-300">
-                  I help turn ideas into structured digital products that are easier to use, easier to maintain, and
-                  ready to scale with the team behind them.
+                  {profile.education.degree} - {profile.education.school}
+                </p>
+                <p className="text-base leading-8 text-slate-700 dark:text-slate-300">
+                  Expected Graduation: {profile.education.expectedGraduation}
                 </p>
               </div>
             </div>
 
             <div className="mt-8 rounded-3xl border border-teal-300/14 bg-teal-300/6 px-5 py-5">
-              <p className="text-sm leading-7 text-slate-700 dark:text-slate-300">{profile.location}</p>
+              <p className="text-sm leading-7 text-slate-700 dark:text-slate-300">
+                {profile.education.note}
+              </p>
+              <p className="mt-2 text-sm leading-7 text-slate-700 dark:text-slate-300">{profile.location}</p>
             </div>
           </div>
 

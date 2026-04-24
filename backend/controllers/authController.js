@@ -18,27 +18,34 @@ const registerAdmin = async (req, res) => {
   try {
     const body = req.body || {};
     const { name, email, password } = body;
+    const trimmedName = name?.trim() || "";
+    const normalizedEmail = email?.trim().toLowerCase() || "";
+    const normalizedPassword = password?.trim() || "";
 
-    if (!name || !email || !password) {
+    if (!trimmedName || !normalizedEmail || !normalizedPassword) {
       return res.status(400).json({
         success: false,
         message: "Please provide name, email, and password",
       });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
-    const trimmedName = name.trim();
+    if (normalizedPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
 
     const existingAdmin = await Admin.findOne({ email: normalizedEmail });
 
     if (existingAdmin) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
         message: "Admin already exists",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(normalizedPassword, 10);
 
     const admin = await Admin.create({
       name: trimmedName,
